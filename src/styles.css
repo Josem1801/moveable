@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .title {
+    @apply  font-sans text-center;
+  }
+  .component_container {
+    @apply relative;
+  }
+  .main {
+    @apply grid gap-4;
+  }
+  .button {
+    @apply flex justify-center items-center w-8 h-8 rounded-full border-none text-xs;
+  }
+}
+
+body{
+  overflow: hidden;
+
+}
