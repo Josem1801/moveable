@@ -59,19 +59,27 @@ const MoveableComponent = ({ containerRef, children, width, height }) => {
     const diffX = event.clientX - initialPosition.x;
     const diffY = event.clientY - initialPosition.y;
 
-    let newWidth = currentPosition.width - diffX;
-    let newHeight = currentPosition.height - diffY;
-    let newX = currentPosition.x + diffX;
-    let newY = currentPosition.y + diffY;
+    let newWidth = currentPosition.width + diffX;
+    let newHeight = currentPosition.height + diffY;
+    let newX = currentPosition.x;
+    let newY = currentPosition.y;
 
-    if (resizeDirection === "right") {
+    if (resizeDirection.includes("right")) {
       newWidth = currentPosition.width + diffX;
-    } else if (resizeDirection === "bottom") {
-      newHeight = currentPosition.height + diffY;
+    } else if (resizeDirection.includes("left")) {
+      newWidth = currentPosition.width - diffX;
+      newX = currentPosition.x + diffX;
     }
 
-    const maxX = containerRect.width - newWidth;
-    const maxY = containerRect.height - newHeight;
+    if (resizeDirection.includes("bottom")) {
+      newHeight = currentPosition.height + diffY;
+    } else if (resizeDirection.includes("top")) {
+      newHeight = currentPosition.height - diffY;
+      newY = currentPosition.y + diffY;
+    }
+
+    const maxX = containerRect.width - newX;
+    const maxY = containerRect.height - newY;
 
     setCurrentPosition((prevPosition) => ({
       ...prevPosition,
@@ -141,6 +149,24 @@ const MoveableComponent = ({ containerRef, children, width, height }) => {
           <div
             className="w-2 h-2 bg-white rounded-full absolute bottom-0 left-1/2 transform -translate-x-1/2 cursor-ns-resize"
             onMouseDown={(event) => handleResizeMouseDown(event, "bottom")}
+          />
+          <div
+            className="w-2 h-2 bg-white rounded-full absolute top-0 left-0 transform -translate-y-1/2 -translate-x-1/2 cursor-nwse-resize"
+            onMouseDown={(event) => handleResizeMouseDown(event, "top-left")}
+          />
+          <div
+            className="w-2 h-2 bg-white rounded-full absolute top-0 right-0 transform -translate-y-1/2 translate-x-1/2 cursor-nesw-resize"
+            onMouseDown={(event) => handleResizeMouseDown(event, "top-right")}
+          />
+          <div
+            className="w-2 h-2 bg-white rounded-full absolute bottom-0 left-0 transform translate-y-1/2 -translate-x-1/2 cursor-nesw-resize"
+            onMouseDown={(event) => handleResizeMouseDown(event, "bottom-left")}
+          />
+          <div
+            className="w-2 h-2 bg-white rounded-full absolute bottom-0 right-0 transform translate-y-1/2 translate-x-1/2 cursor-nwse-resize"
+            onMouseDown={(event) =>
+              handleResizeMouseDown(event, "bottom-right")
+            }
           />
         </>
       )}
